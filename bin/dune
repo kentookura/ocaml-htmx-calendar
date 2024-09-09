@@ -2,7 +2,7 @@
  (public_name forester-cal)
  (name main)
  (libraries
-   forester_cal
+   forester_cal.lib
    calendar
    icalendar
    eio_main

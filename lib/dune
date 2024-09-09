@@ -1,2 +1,7 @@
 (library
- (name forester_cal))
+ (name forester_cal)
+ (public_name forester_cal.lib)
+ (libraries 
+   calendar
+   routes
+   pure-html))

@@ -1,4 +1,5 @@
-let schedule = {|BEGIN:VCALENDAR
+let schedule =
+  {|BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:icalendar-ruby
 CALSCALE:GREGORIAN
