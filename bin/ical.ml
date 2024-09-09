@@ -1,0 +1,172 @@
+let schedule = {|BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:icalendar-ruby
+CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:Europe/Vienna
+BEGIN:DAYLIGHT
+DTSTART:20000326T030000
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
+TZNAME:CEST
+END:DAYLIGHT
+BEGIN:STANDARD
+DTSTART:19991031T020000
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
+TZNAME:CET
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:be0b7ffe-02f9-465a-823c-c26f4e5e83c8
+DTSTART;TZID=Europe/Vienna:20241002T164500
+DTEND;TZID=Europe/Vienna:20241002T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:ecd846ac-ef59-48c9-a5fc-92da6d977e5f
+DTSTART;TZID=Europe/Vienna:20241009T164500
+DTEND;TZID=Europe/Vienna:20241009T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:415e17d7-7d13-430c-bcb5-0e16be52b7a3
+DTSTART;TZID=Europe/Vienna:20241016T164500
+DTEND;TZID=Europe/Vienna:20241016T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:881f8bed-e6b9-4d17-998c-f51e74d69e51
+DTSTART;TZID=Europe/Vienna:20241023T164500
+DTEND;TZID=Europe/Vienna:20241023T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:f5c2f99d-cf6e-4aab-bf44-6a1cb005050c
+DTSTART;TZID=Europe/Vienna:20241030T164500
+DTEND;TZID=Europe/Vienna:20241030T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:cc161bd0-6199-44ad-952c-0f4de3ce57b0
+DTSTART;TZID=Europe/Vienna:20241106T164500
+DTEND;TZID=Europe/Vienna:20241106T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:3071f50a-77fe-431d-a5c3-fb0d3b2e8c26
+DTSTART;TZID=Europe/Vienna:20241113T164500
+DTEND;TZID=Europe/Vienna:20241113T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:65ee64c2-4262-4041-890e-8f8ba2d41e42
+DTSTART;TZID=Europe/Vienna:20241120T164500
+DTEND;TZID=Europe/Vienna:20241120T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:808520f9-5cc1-48a1-b4b1-242ec91fac47
+DTSTART;TZID=Europe/Vienna:20241127T164500
+DTEND;TZID=Europe/Vienna:20241127T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:ec5b0cb8-6891-4cbf-8f9b-13ed11858877
+DTSTART;TZID=Europe/Vienna:20241204T164500
+DTEND;TZID=Europe/Vienna:20241204T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:702bdf3a-f517-43e6-a4ed-2f903977d71b
+DTSTART;TZID=Europe/Vienna:20241211T164500
+DTEND;TZID=Europe/Vienna:20241211T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:2a0a98dc-0d5d-4afb-ae13-711b6b5edbb8
+DTSTART;TZID=Europe/Vienna:20250108T164500
+DTEND;TZID=Europe/Vienna:20250108T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:5e8ea24e-f6f2-4875-9c41-312e2a90f0f2
+DTSTART;TZID=Europe/Vienna:20250115T164500
+DTEND;TZID=Europe/Vienna:20250115T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:0ec4c9ef-6548-44c4-9466-e2772d54333c
+DTSTART;TZID=Europe/Vienna:20250122T164500
+DTEND;TZID=Europe/Vienna:20250122T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20240909T070950Z
+UID:c4e4f325-fa45-48ff-9ec8-a11d67637269
+DTSTART;TZID=Europe/Vienna:20250129T164500
+DTEND;TZID=Europe/Vienna:20250129T200000
+LOCATION:Seminarraum 9  Oskar-Morgenstern-Platz 1  2.Stock
+SUMMARY:250065-1 VU Kunst des Problemlösens
+URL;VALUE=URI:https://ufind.univie.ac.at/de/course.html?lv=250065&semester=
+ 2024W#gr1
+END:VEVENT
+END:VCALENDAR|}

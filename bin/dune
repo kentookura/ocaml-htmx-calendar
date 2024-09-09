@@ -1,0 +1,12 @@
+(executable
+ (public_name forester-cal)
+ (name main)
+ (libraries
+   forester_cal
+   calendar
+   icalendar
+   eio_main
+   pure-html
+   eio
+   cohttp-eio
+   routes))
