@@ -25,6 +25,8 @@
    routes
    calendar
    forester
+   tls-eio
+   mirage-crypto-rng-eio
    (cohttp-eio (>= 6.0.0~beta2))
    (eio_main (>= 1.1))
    (pure-html (>= 3.6.1))

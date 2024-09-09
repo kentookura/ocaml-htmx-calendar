@@ -2,29 +2,6 @@ open CalendarLib
 open Pure_html
 open HTML
 
-let split_n t_orig n =
-  if n <= 0 then [], t_orig
-  else
-    (
-      let rec loop n t accum =
-        match t with
-        | [] -> t_orig, [] (* in this case, t_orig = rev accum *)
-        | hd :: tl -> if n = 0 then List.rev accum, t else loop (n - 1) tl (hd :: accum)
-      in
-      loop n t_orig []
-    )
-
-let chunks_of l ~length =
-  if length <= 0 then failwith "List.chunks_of: Expected length > 0";
-  let rec aux length acc l =
-    match l with
-    | [] -> List.rev acc
-    | _ :: _ ->
-      let sublist, l = split_n l length in
-      aux length (sublist :: acc) l
-  in
-  aux length [] l
-
 let first_of_month date =
   let m = Date.month date in
   let y = Date.year date in
@@ -128,21 +105,21 @@ let view : Date.t -> Pure_html.node = fun date ->
     in
     let days_from_last =
       let pd = Date.Period.day (padding_end date) in
-      daily
+      day_button
+      |> daily
         (Date.add (last_of_month date) (Date.Period.day 1))
         pd
-        day_button
     in
     let month =
-      daily
+      day_button
+      |> daily
         (first_of_month date)
         (Date.Period.day (Date.days_in_month date))
-        day_button
     in
     let day_rows =
       days_till_first @ month @ days_from_last
       |> List.map (fun button -> td [] [button])
-      |> chunks_of ~length: 7
+      |> List_extra.chunks_of ~length: 7
       |> List.map (fun row -> tr [] row)
     in
     let cal_table =

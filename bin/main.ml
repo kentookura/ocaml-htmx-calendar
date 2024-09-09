@@ -20,6 +20,20 @@ let day_route = (s "calendar" / int / int / int /? nil)
 
 let respond html = (Http.Response.make ~status: `OK (), Cohttp_eio.Body.of_string (to_string html))
 
+let null_auth ?ip: _ ~host: _ _ =
+  Ok None (* Warning: use a real authenticator in your code! *)
+
+let https ~authenticator =
+  match Tls.Config.client ~authenticator () with
+  | Ok config ->
+    fun uri raw ->
+      let host =
+        Uri.host uri
+        |> Option.map (fun x -> Domain_name.(host_exn (of_string_exn x)))
+      in
+      Tls_eio.client_of_flow ?host config raw
+  | _ -> failwith "could not create tls client"
+
 module Server = struct
   open Routes
 
@@ -27,7 +41,23 @@ module Server = struct
 
   let style = Routes.((s "style.css" /? nil))
 
-  let api ~env =
+  let api ~env ~sw =
+    let client = Cohttp_eio.Client.make ~https: (Some (https ~authenticator: null_auth)) env#net in
+    let calendars =
+      ["https://m2-ufind.univie.ac.at/courses/250029/2024W/1/ww.ics"]
+      |> List.map
+        (
+          fun url ->
+            let resp, body =
+              Cohttp_eio.Client.get ~sw client (Uri.of_string url)
+            in
+            if Http.Status.compare resp.status `OK = 0 then
+              Eio.Buf_read.(parse_exn take_all) body ~max_size: max_int
+            else
+              ""
+        )
+      |> List.filter_map (fun s -> match Icalendar.parse s with Ok cal -> Some cal | _ -> None)
+    in
     let stylesheet = Eio.Path.(load (env#cwd / "assets/style.css")) in
     [
       Routes.nil @-->
@@ -38,13 +68,20 @@ module Server = struct
           head
             []
             [
+              meta [charset "utf-8"];
               script [src "https://unpkg.com/htmx.org@2.0.2"] "";
               link [rel "stylesheet"; href "style.css"];
             ];
           body
             []
             [
-              Month.view  (Date.today ())
+              div
+                []
+                [
+                  h2 [] [txt "Upcoming meetings:"];
+                  Meetings.upcoming ~number: 10 calendars;
+                ];
+              Month.view (Date.today ())
             ];
         ];
       style @-->
@@ -69,13 +106,13 @@ module Server = struct
         )
     ]
 
-  let router ~env = Routes.one_of (api ~env)
+  let router ~env ~sw = Routes.one_of (api ~env ~sw)
 
   let fourohfour = div [] [txt "Page not found"]
 
-  let handler ~env = fun _socket request _body ->
+  let handler ~env ~sw = fun _socket request _body ->
       let path = Http.Request.resource request in
-      let matched_page = Routes.match' (router ~env) ~target: path in
+      let matched_page = Routes.match' (router ~env ~sw) ~target: path in
       match matched_page with
       | Routes.FullMatch html
       | Routes.MatchWithTrailingSlash html ->
@@ -94,7 +131,7 @@ module Server = struct
             ~backlog: 128
             ~reuse_addr: true
             (`Tcp (Eio.Net.Ipaddr.V4.loopback, port))
-        and server = Cohttp_eio.Server.make ~callback: (handler ~env) ()
+        and server = Cohttp_eio.Server.make ~callback: (handler ~env ~sw) ()
         in
         Cohttp_eio.Server.run socket server ~on_error: log_warning
 end
@@ -102,4 +139,6 @@ end
 let () =
   Eio_main.run @@
     fun env ->
-      Server.run ~env ~port: 2387
+      Mirage_crypto_rng_eio.run (module Mirage_crypto_rng.Fortuna) env @@
+        fun () ->
+          Server.run ~env ~port: 2387

@@ -6,7 +6,9 @@
    calendar
    icalendar
    eio_main
+   tls-eio
    pure-html
    eio
    cohttp-eio
-   routes))
+   routes
+   mirage-crypto-rng-eio))

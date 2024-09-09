@@ -2,6 +2,7 @@
  (name forester_cal)
  (public_name forester_cal.lib)
  (libraries 
+   icalendar
    calendar
    routes
    pure-html))
