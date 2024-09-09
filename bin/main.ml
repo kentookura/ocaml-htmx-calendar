@@ -4,19 +4,12 @@ open Pure_html
 open HTML
 open Dream_calendar
 
-(* let render_ical_component (c : Icalendar.component) = *)
-(*   match c with *)
-(*   | `Event{ dtstamp; uid; dtstart; dtend_or_duration; rrule; props; alarms } -> div [] [] *)
-(*   | `Todo (todo_props, alarms) -> div [] [] *)
-(*   | `Freebusy (freebusy_props) -> div [] [] *)
-(*   | `Timezone (timezone) -> div [] [] *)
-(**)
-
 open Routes
 
 let year_route = (s "calendar" / int /? nil)
 let month_route = (s "calendar" / int / int /? nil)
 let day_route = (s "calendar" / int / int / int /? nil)
+let events = (s "events" / int / int / int /? nil)
 
 let respond html = (Http.Response.make ~status: `OK (), Cohttp_eio.Body.of_string (to_string html))
 
@@ -36,8 +29,6 @@ let https ~authenticator =
 
 module Server = struct
   open Routes
-
-  (* let server_error = Http.Response.make ~status: `Internal_server_error () *)
 
   let style = Routes.((s "style.css" /? nil))
 
@@ -84,6 +75,49 @@ module Server = struct
               Month.view (Date.today ())
             ];
         ];
+      events @-->
+        (
+          fun i j k ->
+            let date = Date.make i j k in
+            let events =
+              calendars
+              |> List.map Meetings.events
+              |> List.map
+                (
+                  List.filter_map
+                    (
+                      function
+                      | Icalendar.{ dtstart; _ } as event ->
+                        if extract_date (snd dtstart) = date then
+                          Some event
+                        else None
+                    )
+                )
+              |> List.concat
+              |> List.sort
+                (
+                  fun e1 e2 ->
+                    Icalendar.(
+                      Date.compare
+                        (extract_date @@ snd e1.dtstart)
+                        (extract_date @@ snd e2.dtstart)
+                    )
+                )
+              |> List.map
+                (
+                  fun (Icalendar.{ props; _ }) ->
+                    let summary =
+                      match List.find_map
+                        (fun prop -> match prop with `Summary x -> Some x | _ -> None)
+                        props with
+                      | Some (_, str) -> str
+                      | None -> ""
+                    in
+                    div [] [txt "%s" summary]
+                )
+            in
+            respond @@ div [] events
+        );
       style @-->
         Cohttp_eio.Server.respond ~status: `OK ~body: (Eio.Flow.string_source stylesheet) ();
       year_route @-->
