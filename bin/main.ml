@@ -10,6 +10,7 @@ let year_route = (s "calendar" / int /? nil)
 let month_route = (s "calendar" / int / int /? nil)
 let day_route = (s "calendar" / int / int / int /? nil)
 let events = (s "events" / int / int / int /? nil)
+let fonts = (s "fonts" / str /? nil)
 
 let respond html = (Http.Response.make ~status: `OK (), Cohttp_eio.Body.of_string (to_string html))
 
@@ -50,6 +51,7 @@ module Server = struct
       |> List.filter_map (fun s -> match Icalendar.parse s with Ok cal -> Some cal | _ -> None)
     in
     let stylesheet = Eio.Path.(load (env#cwd / "assets/style.css")) in
+    let load_font str = Eio.Path.(load (env#cwd / (Format.sprintf "assets/%s" str))) in
     [
       Routes.nil @-->
       respond @@
@@ -66,15 +68,12 @@ module Server = struct
           body
             []
             [
-              div
-                []
+              section
+                [HTML.style_ "display: inline-block"]
                 [
                   h2 [] [txt "Upcoming meetings:"];
                   Meetings.upcoming ~number: 10 calendars;
-                  section [id "meetings-preview"]
-                    [
-
-                    ]
+                  section [ id "meetings-preview" ] [ ]
                 ];
               Month.view (Date.today ())
             ];
@@ -83,42 +82,12 @@ module Server = struct
         (
           fun i j k ->
             let date = Date.make i j k in
-            let events =
-              calendars
-              |> List.map Meetings.events
-              |> List.map
-                (
-                  List.filter_map
-                    (
-                      function
-                      | Icalendar.{ dtstart; _ } as event ->
-                        if extract_date (snd dtstart) = date then
-                          Some event
-                        else None
-                    )
-                )
-              |> List.concat
-              |> List.sort
-                (
-                  fun e1 e2 ->
-                    Icalendar.(
-                      Date.compare
-                        (extract_date @@ snd e1.dtstart)
-                        (extract_date @@ snd e2.dtstart)
-                    )
-                )
-              |> List.map
-                (
-                  fun event ->
-                    match summary event with
-                    | Some s -> div [] [txt "%s" s]
-                    | None -> div [] [txt "%s" "unnamed event"]
-                )
-            in
-            respond @@ div [] events
+            respond @@ Meetings.on date calendars
         );
       style @-->
         Cohttp_eio.Server.respond ~status: `OK ~body: (Eio.Flow.string_source stylesheet) ();
+      fonts @-->
+        (fun path -> Cohttp_eio.Server.respond ~status: `OK ~body: (Eio.Flow.string_source (load_font path)) ());
       year_route @-->
         (
           fun i ->

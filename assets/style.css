@@ -623,11 +623,20 @@ ol li ol li ol {
  color: white;
 }
 
-/* .month-selection{ */
-/*   display: flex; */
-/* } */
+.month-selection{
+  display: flex;
+  justify-content: space-between;
+}
 
 .month-nav-button svg {
   height: 10px;
   width: 10px;
+}
+
+.day-button{
+  width: 100%;
+}
+
+#calendar{
+  height: 100%;
 }

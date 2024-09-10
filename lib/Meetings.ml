@@ -36,7 +36,7 @@ let on : Date.t -> calendar list -> node = fun date calendars ->
             | None -> li [] [txt "unnamed event"]
         )
     in
-      div [] [ h2 [][txt "Schedule for %s" (Printer.Date.sprint "%B %d, %Y" date )]; ol [] events]
+    div [] [h2 [] [txt "Schedule for %s" (Printer.Date.sprint "%B %d, %Y" date)]; ol [] events]
 
 let upcoming : number: int -> calendar list -> node = fun ~number calendars ->
     let events =
@@ -71,7 +71,7 @@ let upcoming : number: int -> calendar list -> node = fun ~number calendars ->
               in
               match location with
               | Some (_, loc) ->
-                div
+                li
                   []
                   [
                     txt "%s" date;
@@ -80,4 +80,4 @@ let upcoming : number: int -> calendar list -> node = fun ~number calendars ->
               | None -> (div [] [])
         )
     in
-    div [] events
+    ol [] events

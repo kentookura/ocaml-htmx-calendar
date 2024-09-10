@@ -77,9 +77,10 @@ let day_button (date : Date.t) =
   button
     [
       type_ "button";
+      class_ "day-button";
       Hx.get "/events/%s" (pack_date date);
       Hx.target "#meetings-preview";
-      Hx.target "innerHTML"
+      Hx.swap "innerHTML"
     ]
     [
       time
@@ -133,19 +134,22 @@ let view : Date.t -> Pure_html.node = fun date ->
         []
         (weekday_header :: day_rows)
     in
-    div
+    section
       [
-        id "calendar"
+        id "calendar";
+        HTML.style_ "display: inline-block";
       ]
       [
-        span
+        div
           [class_ "month-selection"]
           [
-            div
+            h3
               []
               [txt "%s" (Printer.name_of_month @@ Date.month date)];
-            previous_month ~date;
-            next_month ~date
+            div [][
+              previous_month ~date;
+              next_month ~date;
+            ]
           ];
         cal_table
       ];
