@@ -6,13 +6,37 @@ open HTML
 
 let (let*) = Option.bind
 
+let event = function `Event e -> Some e | _ -> None
+
 let events : calendar -> event list =
-  Fun.compose
-    (
-      List.filter_map
-        (fun c -> match c with `Event e -> Some e | _ -> None)
-    )
-    snd
+  Fun.compose (List.filter_map event) snd
+
+let on : Date.t -> calendar list -> node = fun date calendars ->
+    let events =
+      calendars
+      |> List.map snd
+      |> List.concat
+      |> List.filter_map
+        (
+          fun c ->
+            match c with
+            | `Event ({ dtstart; _ } as e) ->
+              let d = extract_date (snd dtstart) in
+              if d = date then Some e else None
+            | `Freebusy _
+            | `Todo _
+            | `Timezone _ ->
+              None
+        )
+      |> List.map
+        (
+          fun d ->
+            match Date_util.summary d with
+            | Some s -> li [] [txt "%s" s]
+            | None -> li [] [txt "unnamed event"]
+        )
+    in
+      div [] [ h2 [][txt "Schedule for %s" (Printer.Date.sprint "%B %d, %Y" date )]; ol [] events]
 
 let upcoming : number: int -> calendar list -> node = fun ~number calendars ->
     let events =

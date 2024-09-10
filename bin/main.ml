@@ -60,7 +60,7 @@ module Server = struct
             []
             [
               meta [charset "utf-8"];
-              script [src "https://unpkg.com/htmx.org@2.0.2"] "";
+              script [src "https://unpkg.com/htmx.org@2.0.2/dist/htmx.js"] "";
               link [rel "stylesheet"; href "style.css"];
             ];
           body
@@ -71,6 +71,10 @@ module Server = struct
                 [
                   h2 [] [txt "Upcoming meetings:"];
                   Meetings.upcoming ~number: 10 calendars;
+                  section [id "meetings-preview"]
+                    [
+
+                    ]
                 ];
               Month.view (Date.today ())
             ];
@@ -105,15 +109,10 @@ module Server = struct
                 )
               |> List.map
                 (
-                  fun (Icalendar.{ props; _ }) ->
-                    let summary =
-                      match List.find_map
-                        (fun prop -> match prop with `Summary x -> Some x | _ -> None)
-                        props with
-                      | Some (_, str) -> str
-                      | None -> ""
-                    in
-                    div [] [txt "%s" summary]
+                  fun event ->
+                    match summary event with
+                    | Some s -> div [] [txt "%s" s]
+                    | None -> div [] [txt "%s" "unnamed event"]
                 )
             in
             respond @@ div [] events

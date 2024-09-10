@@ -21,17 +21,6 @@ let pack_date date =
 let padding_start date = (Date.int_of_day @@ Date.day_of_week @@ first_of_month date) - 1
 let padding_end date = 7 - (Date.int_of_day @@ Date.day_of_week @@ last_of_month date)
 
-let day_button (date : Date.t) =
-  button
-    [type_ "button"]
-    [
-      time
-        [
-          datetime "%s" (Printer.Date.to_string date);
-        ]
-        [txt "%d" (Date.day_of_month date)];
-    ]
-
 let daily start period f =
   let rec step (current : 'a Date.date) (computed : 'b list) (left : int) =
     let next_date = Date.next current `Day in
@@ -43,7 +32,7 @@ let daily start period f =
   |> List.rev
 
 let month_select_button dir ~date =
-  let (date, text, icon)
+  let (date, _text, icon) (* Should use text for screen reader *)
     =
     match dir with
     | `Previous ->
@@ -62,10 +51,11 @@ let month_select_button dir ~date =
       Hx.get "/calendar/%s" (pack_date date);
       Hx.target "#calendar";
       Hx.swap "outerHTML";
+      class_ "month-nav-button";
       type_ "button";
     ]
     [
-      span [] [txt "%s" text];
+      (* span [] [txt "%s" text]; *)
       SVG.svg
         [
           SVG.viewbox ~min_x: 0 ~min_y: 0 ~width: 20 ~height: 20;
@@ -82,6 +72,22 @@ let month_select_button dir ~date =
 
 let previous_month ~date = month_select_button `Previous ~date
 let next_month ~date = month_select_button `Next ~date
+
+let day_button (date : Date.t) =
+  button
+    [
+      type_ "button";
+      Hx.get "/events/%s" (pack_date date);
+      Hx.target "#meetings-preview";
+      Hx.target "innerHTML"
+    ]
+    [
+      time
+        [
+          datetime "%s" (Printer.Date.to_string date);
+        ]
+        [txt "%d" (Date.day_of_month date)];
+    ]
 
 let view : Date.t -> Pure_html.node = fun date ->
     let days_in_current_month = Date.days_in_month date in
@@ -135,10 +141,10 @@ let view : Date.t -> Pure_html.node = fun date ->
         span
           [class_ "month-selection"]
           [
-            previous_month ~date;
             div
               []
               [txt "%s" (Printer.name_of_month @@ Date.month date)];
+            previous_month ~date;
             next_month ~date
           ];
         cal_table
