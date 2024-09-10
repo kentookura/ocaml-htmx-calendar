@@ -623,9 +623,11 @@ ol li ol li ol {
  color: white;
 }
 
-.month-selection{
-  display: flex;
-}
+/* .month-selection{ */
+/*   display: flex; */
+/* } */
 
-.month-select-button{
+.month-nav-button svg {
+  height: 10px;
+  width: 10px;
 }
