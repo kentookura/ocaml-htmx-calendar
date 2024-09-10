@@ -68,14 +68,14 @@ module Server = struct
           body
             []
             [
+              Month.view (Date.today ());
+              section [ id "meetings-preview"; HTML.style_ "display: inline-block" ] [ ];
               section
-                [HTML.style_ "display: inline-block"]
+                [ HTML.style_ "display: inline-block"]
                 [
-                  h2 [] [txt "Upcoming meetings:"];
+                  h2 [] [txt "Upcoming events:"];
                   Meetings.upcoming ~number: 10 calendars;
-                  section [ id "meetings-preview" ] [ ]
                 ];
-              Month.view (Date.today ())
             ];
         ];
       events @-->

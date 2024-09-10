@@ -35,6 +35,7 @@ let on : Date.t -> calendar list -> node = fun date calendars ->
             | Some s -> li [] [txt "%s" s]
             | None -> li [] [txt "unnamed event"]
         )
+      |> function [] -> [txt "No events on this day"] | xs -> xs
     in
     div [] [h2 [] [txt "Schedule for %s" (Printer.Date.sprint "%B %d, %Y" date)]; ol [] events]
 
@@ -49,12 +50,7 @@ let upcoming : number: int -> calendar list -> node = fun ~number calendars ->
         (
           fun event ->
             match event with
-            | { props; dtstart; _ } ->
-              let location =
-                List.find_map
-                  (fun prop -> match prop with `Location x -> Some x | _ -> None)
-                  props
-              in
+            | { dtstart; _ } ->
               let date =
                 (
                   match snd dtstart with
@@ -67,17 +63,17 @@ let upcoming : number: int -> calendar list -> node = fun ~number calendars ->
                     |> fst
                 )
                 |> (fun (i, j, k) -> Date.make i j k)
-                |> Printer.Date.to_string
+                |> Printer.Date.sprint "%a, %b %d"
               in
-              match location with
-              | Some (_, loc) ->
+              let loc = match Date_util.location event with Some str -> div [][txt "%s" str] | None -> null [] in
+              let summary = match Date_util.summary event with Some str -> div [][txt "%s" str] | None -> null [] in
                 li
                   []
                   [
-                    txt "%s" date;
-                    txt "%s" loc;
+                    time [][txt "%s" date];
+                    loc; summary
+                    
                   ]
-              | None -> (div [] [])
         )
     in
     ol [] events
