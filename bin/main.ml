@@ -70,7 +70,7 @@ module Server = struct
               Month.view (Date.today ());
               section [ id "meetings-preview"; HTML.style_ "display: inline-block" ] [ ];
               section
-                [ HTML.style_ "display: inline-block"]
+                []
                 [
                   h2 [] [txt "Upcoming events:"];
                   Meetings.upcoming ~number: 10 calendars;
@@ -112,7 +112,9 @@ module Server = struct
   let fourohfour = div [] [txt "Page not found"]
 
   let handler ~env ~sw = fun _socket request _body ->
-      let path = Http.Request.resource request in
+      let uri = Cohttp.Request.uri request in
+      let path = Uri.path uri in
+      let _query = Uri.query uri in
       let matched_page = Routes.match' (router ~env ~sw) ~target: path in
       match matched_page with
       | Routes.FullMatch html

@@ -137,7 +137,6 @@ let view : Date.t -> Pure_html.node = fun date ->
     section
       [
         id "calendar";
-        HTML.style_ "display: inline-block";
       ]
       [
         div
