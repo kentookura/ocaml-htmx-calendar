@@ -1,6 +1,6 @@
 (library
- (name forester_cal)
- (public_name forester_cal.lib)
+ (name htmx_calendar)
+ (public_name htmx_calendar.lib)
  (libraries 
    icalendar
    calendar

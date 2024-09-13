@@ -1,8 +1,8 @@
 (executable
- (public_name forester-cal)
+ (public_name htmx_calendar)
  (name main)
  (libraries
-   forester_cal.lib
+   htmx_calendar.lib
    calendar
    icalendar
    eio_main

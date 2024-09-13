@@ -15,7 +15,7 @@
       opam-repository,
     }@inputs:
     let
-      package = "forester_cal";
+      package = "htmx_calendar";
     in
     flake-utils.lib.eachDefaultSystem (
       system:

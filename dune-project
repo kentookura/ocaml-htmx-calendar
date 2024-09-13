@@ -1,6 +1,6 @@
 (lang dune 3.15)
 
-(name forester_cal)
+(name htmx_calendar)
 
 (generate_opam_files true)
 
@@ -16,7 +16,7 @@
 (documentation https://url/to/documentation)
 
 (package
- (name forester_cal)
+ (name htmx_calendar)
  (synopsis "A short synopsis")
  (description "A longer description")
  (depends
@@ -24,7 +24,6 @@
    dune
    routes
    calendar
-   forester
    tls-eio
    mirage-crypto-rng-eio
    (cohttp-eio (>= 6.0.0~beta2))
